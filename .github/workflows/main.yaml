@@ -53,6 +53,14 @@ jobs:
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
           docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-notes:$IMAGE_TAG .
 
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget -qO trivy.tar.gz https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.50.1_Linux-64bit.tar.gz
+          tar zxvf trivy.tar.gz
+          sudo mv trivy /usr/local/bin/
+
       - name: Run Trivy scan with SARIF output
         run: |
           trivy image --exit-code 1 --severity CRITICAL,HIGH \
