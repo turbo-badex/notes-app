@@ -51,7 +51,7 @@ jobs:
         run: |
           IMAGE_TAG=v$(date +%Y%m%d%H%M%S)
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-notes:$IMAGE_TAG ./app
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-notes:$IMAGE_TAG .
 
       - name: Run Trivy scan with SARIF output
         run: |
