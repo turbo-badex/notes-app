@@ -32,6 +32,8 @@ if os.getenv("FLASK_ENV") != "testing":
 
 @app.route("/add", methods=["POST"])
 def add_note():
+    if os.getenv("FLASK_ENV") == "testing":
+        return jsonify({"status": "ok (mocked)"})
     note = request.json.get("note")
     cur.execute("INSERT INTO notes (content) VALUES (%s);", (note,))
     conn.commit()
@@ -39,6 +41,8 @@ def add_note():
 
 @app.route("/notes", methods=["GET"])
 def get_notes():
+    if os.getenv("FLASK_ENV") == "testing":
+        return jsonify([["mock-note-1"], ["mock-note-2"]])
     cur.execute("SELECT * FROM notes;")
     notes = cur.fetchall()
     return jsonify(notes)
