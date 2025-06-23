@@ -4,25 +4,31 @@ import os
 import time
 
 app = Flask(__name__)
+conn = None
+cur = None
 
-# Retry until DB is ready
-while True:
-    try:
-        conn = psycopg2.connect(
-            dbname=os.getenv("POSTGRES_DB"),
-            user=os.getenv("POSTGRES_USER"),
-            password=os.getenv("POSTGRES_PASSWORD"),
-            host=os.getenv("POSTGRES_HOST"),
-            port=os.getenv("POSTGRES_PORT", 5432)
-        )
-        break
-    except Exception as e:
-        print("Waiting for database...")
-        time.sleep(2)
+def init_db():
+    global conn, cur
+    while True:
+        try:
+            conn = psycopg2.connect(
+                dbname=os.getenv("POSTGRES_DB"),
+                user=os.getenv("POSTGRES_USER"),
+                password=os.getenv("POSTGRES_PASSWORD"),
+                host=os.getenv("POSTGRES_HOST"),
+                port=os.getenv("POSTGRES_PORT", 5432)
+            )
+            cur = conn.cursor()
+            cur.execute("CREATE TABLE IF NOT EXISTS notes (id SERIAL PRIMARY KEY, content TEXT);")
+            conn.commit()
+            break
+        except Exception as e:
+            print("Waiting for database...")
+            time.sleep(2)
 
-cur = conn.cursor()
-cur.execute("CREATE TABLE IF NOT EXISTS notes (id SERIAL PRIMARY KEY, content TEXT);")
-conn.commit()
+# 🛑 Skip DB connection during testing (e.g., in CI)
+if os.getenv("FLASK_ENV") != "testing":
+    init_db()
 
 @app.route("/add", methods=["POST"])
 def add_note():
