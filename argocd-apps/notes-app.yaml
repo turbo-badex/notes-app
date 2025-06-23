@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: notes-app
+  namespace: argocd  # ArgoCD's own namespace
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/<your-username>/notes-app
+    targetRevision: main
+    path: .                     # Points to root of the repo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: notes-app       # Where your app + db will be deployed
+  syncPolicy:
+    automated:
+      prune: true              # Delete removed resources
+      selfHeal: true           # Re-sync if drift is detected
+    syncOptions:
+      - CreateNamespace=true   # Create the namespace if it doesn't exist

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-notes
+  namespace: notes-app
+  labels:
+    app: flask-notes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-notes
+  template:
+    metadata:
+      labels:
+        app: flask-notes
+    spec:
+      containers:
+      - name: flask-notes
+        image: badex/flask-notes:latest
+        ports:
+        - containerPort: 5050
+        env:
+        - name: DB_HOST
+          value: postgres
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: notes
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
