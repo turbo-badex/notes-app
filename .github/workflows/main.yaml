@@ -70,8 +70,8 @@ jobs:
 
       - name: Clone GitOps repo
         run: |
-          git config --global user.email "ci@github.com"
-          git config --global user.name "CI Bot"
+          git config --global user.email "taiwo@badex.tv"
+          git config --global user.name "turbo-badex"
           git clone https://${{ secrets.GITOPS_PAT }}@github.com/${{ env.GITOPS_REPO }} gitops
           cd gitops
           sed -i "s|image: .*/flask-notes:.*|image: ${{ secrets.DOCKER_USERNAME }}/flask-notes:${{ env.IMAGE_TAG }}|g" flask-app/deployment.yaml
