@@ -83,6 +83,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/flask-notes:${{ env.IMAGE_TAG }}
 
       - name: Clone GitOps repo
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.email "taiwo@badex.tv"
           git config --global user.name "turbo-badex"
