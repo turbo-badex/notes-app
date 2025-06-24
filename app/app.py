@@ -70,7 +70,7 @@ def form():
                 <a href="/notes">View Notes (JSON)</a>
                 <hr>
                 <footer style="margin-top: 40px; font-size: 0.9em; color: gray;">
-                    Built with Flasks 🐍
+                    Built with Flasks🐍
                 </footer>
             </body>
         </html>
