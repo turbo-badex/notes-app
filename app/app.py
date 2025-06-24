@@ -68,6 +68,10 @@ def form():
                 <p>{{ message }}</p>
                 <br>
                 <a href="/notes">View Notes (JSON)</a>
+                <hr>
+                <footer style="margin-top: 40px; font-size: 0.9em; color: gray;">
+                    Built with Flask 🐍
+                </footer>
             </body>
         </html>
     """, message=message)
