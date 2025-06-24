@@ -10,7 +10,7 @@ permissions:
   security-events: write
 
 env:
-  GITOPS_REPO: badex/NOTES-APP
+  GITOPS_REPO: turbo-badex/notes-app
   GITOPS_BRANCH: main
 
 jobs:
