@@ -1,0 +1,39 @@
+name: GitOps - Update K8s Manifests
+
+on:
+  workflow_run:
+    workflows: ["CI - Build, Test, Scan, Push"]
+    types:
+      - completed
+
+jobs:
+  update-k8s-manifest:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout GitOps repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          token: ${{ secrets.GITOPS_PAT }}
+
+      - name: Download IMAGE_TAG artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: image-tag
+
+      - name: Read IMAGE_TAG
+        run: echo "IMAGE_TAG=$(cat image_tag.txt)" >> $GITHUB_ENV
+
+      - name: Update deployment manifest with new image
+        run: |
+          sed -i "s|image: .*/flask-notes:.*|image: ${{ secrets.DOCKER_USERNAME }}/flask-notes:${{ env.IMAGE_TAG }}|g" flask-app/deployment.yaml
+
+      - name: Commit and push update
+        run: |
+          git config user.name "turbo-badex"
+          git config user.email "taiwo@badex.tv"
+          git add flask-app/deployment.yaml
+          git commit -m "GitOps: Update image to ${{ env.IMAGE_TAG }}"
+          git push origin main
