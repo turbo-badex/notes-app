@@ -16,7 +16,7 @@ env:
 
 jobs:
   build-test-scan-push:
-    name: Build, Test, Scan, Pusher, Update GitOps
+    name: Build, Test, Scan, Push
     runs-on: ubuntu-latest
 
     steps:
