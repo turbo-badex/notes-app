@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: flask-notes
-        image: badex/flask-notes:v20250629164207
+        image: badex/flask-notes:v20250628053213
         ports:
         - containerPort: 5050
         env:
@@ -37,3 +37,10 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: password
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5050
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
