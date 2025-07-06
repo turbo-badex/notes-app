@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: flask-notes
-        image: badex/flask-notes:v20250628053213
+        image: badex/flask-notes:v20250706045031
         ports:
         - containerPort: 5050
         env:
