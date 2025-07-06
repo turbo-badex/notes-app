@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/turbo-badex/notes-app
     targetRevision: main
-    path: .                     # Points to root of the repo
+    path: flask-app             
   destination:
     server: https://kubernetes.default.svc
     namespace: notes-app       # Where your app + db will be deployed
